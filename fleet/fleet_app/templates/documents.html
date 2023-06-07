@@ -1,0 +1,22 @@
+<div class="col-md-3 my-2">
+    <label for="select-region" class="form-label">Departamento <span
+        class="text-danger">*</span></label>
+    <select class="form-select" aria-label="region" id="select-region" name="region" required>
+        <option value=""{% if not operation_center.codigo %} selected {% endif %}>Seleccione una opción</option>
+        {% for region in regions %}
+        <option value="{{ region.codigo }}" {% if region.codigo == operation_center.codigo_ciudad.codigo_departamento.codigo %} selected {% endif %} >{{ region.nombre }}</option>
+        {% endfor %}
+
+    </select>
+</div>
+<div class="col-md-3 my-2">
+    <label for="select-city" class="form-label">Municipio <span
+        class="text-danger">*</span> <i class="fa-solid fa-spinner fa-spin ms-2"
+        id="load-city" style="display: none;"></i></label>
+    <select class="form-select" aria-label="ciudad" id="select-city" name="city" required>
+        <option value="" selected>Seleccione una opción</option>
+        {% for city in cities %}
+            <option value="{{ city.codigo }}" {% if operation_center.codigo_ciudad.codigo == city.codigo %} selected {% endif %} >{{ city.nombre }}</option>
+        {% endfor %}
+    </select>
+</div>

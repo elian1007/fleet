@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex  py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de inventarios</h4>
+
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Historico de reportes</h6>
+            <div class="d-flex flex-row align-items-center">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"><i
+                        class="fa-solid fa-file-excel"></i> Exportar</button>
+                {% if perms.fleet_app.add_inventarios  %}
+                    <a class="btn btn-success ms-2" href="{% url  'inventories_new_report' %}">Nuevo reporte</a>
+                {%endif%}
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div id="collapseOne" class="accordion-collapse collapse mb-5">
+                <div class="accordion-body">
+                    <form method="GET" action="inventories_export" id="form-report">
+                        <div class="row justify-content-center ">
+                            <h6 class="text-center fw-bold mb-3">Exportar reportes</h6>
+                            <div class="col-md-3">
+                                <label for="picker-date-start" class="form-label">Desde la fecha</label>
+                                <input type="date" class="form-control" name="date-start" id="picker-date-start"
+                                    placeholder="seleccione la fecha inicial" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="picker-date-end" class="form-label">Hasta la fecha</label>
+                                <input type="date" class="form-control" name="date-end" id="picker-date-end"
+                                    placeholder="seleccione la fecha final" required>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary ms-2" type="submit"
+                                    id="btn-download-report"><i class="fa-solid fa-download"></i> Descargar
+                                    reporte</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+            </div>
+
+            <table id="inventories_table" class="table nowrap responsive table-striped dt-responsive " width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Fecha corte</th>
+                        <th>Centro de operación</th>
+                        <th>Código de item</th>
+                        <th>Descripción del item</th>
+                        <th>Cantidad en stock</th>
+                        <th>Toma fisica</th>
+                        <th>Diferencia</th>
+                        <th>Observaciones</th>
+                        <th>Reportado por</th>
+                        <!-- <th>Opciones</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block imports %}
+<script type="text/javascript" src="{% static '/js/inventories.js' %}"></script>
+{% endblock %}

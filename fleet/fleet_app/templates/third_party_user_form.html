@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% load helpers %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de terceros</h4>
+
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'third_party_users' %}">Terceros</a></li>
+            <li class="mx-2">|</li>
+            <li class="fw-lighter">{% if third_party_user.cedula %} {{ third_party_user.nombre }} {% else %} Nuevo {% endif %}</li>
+        </ul>
+
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">{% if third_party_user.cedula %} Editar {% else %} Crear {% endif %} tercero</h6>
+        </div>
+        <form action="" method="post" class="needs-validation">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-3 mb-2">
+                        <label for="user_id" class="form-label">Cédula <span
+                            class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="user_id"
+                            placeholder="ingrese la cédula" value="{{ third_party_user.cedula }}" name="user_id" maxlength="10" {% if third_party_user.cedula %} disabled {% endif %} required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label for="name" class="form-label">Nombre <span
+                            class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name"
+                            placeholder="ingrese el nombre" name="name" value="{{ third_party_user.nombre }}" maxlength="50" required>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label for="select-region" class="form-label">Departamento <span
+                            class="text-danger">*</span></label>
+                        <select class="form-select" aria-label="region" id="select-region" name="region" required>
+                            <option value=""{% if third_party_user.codigo %} " " {% else %} selected {% endif %}>Seleccione una opción</option>
+                            {% for region in regions %}
+                            <option value="{{ region.codigo }}" {% if region.codigo == third_party_user.codigo_ciudad.codigo_departamento.codigo %} selected {% endif %} >{{ region.nombre }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label for="select-city" class="form-label">Municipio <span
+                            class="text-danger">*</span> <i class="fa-solid fa-spinner fa-spin ms-2"
+                            id="load-city" style="display: none;"></i></label>
+                        <select class="form-select" aria-label="ciudad" id="select-city" name="city" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for city in cities %}
+                                <option value="{{ city.codigo }}" {% if third_party_user.codigo_ciudad.codigo == city.codigo %} selected {% endif %} >{{ city.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-3 mb-2">
+                        <label for="address" class="form-label">Dirección <span
+                            class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="address" placeholder="ingrese la dirección"
+                            name="address" maxlength="direccion" value="{{ third_party_user.direccion }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="telephone" class="form-label">Teléfono<span
+                            class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" maxlength="20" id="telephone"
+                            placeholder="ingrese el teléfono" value="{{ third_party_user.telefono }}" name="telephone" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="select-state" class="form-label">Estado<span
+                            class="text-danger">*</span></label>
+
+                        <select class="form-select" aria-label="state" id="select-state" name="state" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            <option value="activo" {% if third_party_user.estado == 'activo' %} selected {% endif %} >Activo</option>
+                            <option value="inactivo" {% if third_party_user.estado == 'inactivo' %} selected {% endif %} >Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="name" class="form-label">Seleccione <span
+                            class="text-danger">*</span></label>
+                        <div class="d-flex">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value="si" {% if third_party_user.conductor == 'si' %} checked {% endif %} id="check-is-driver" name="check-is-driver" required> 
+                                <label class="form-check-label" for="check-is-driver">Es conductor</label>
+                            </div>
+
+                            <div class="form-check ms-5">
+                                <input class="form-check-input" type="radio" value="no" {% if third_party_user.conductor == 'no' %} checked {% endif %} id="check-is-driver2" name="check-is-driver" required> 
+                                <label class="form-check-label" for="check-is-driver2">No es conductor</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white justify-content-end d-flex py-3">
+                <a class="btn btn-secondary" type="button" href="{% url  'third_party_users' %}">Descartar</a>
+                <button type="submit" class="btn btn-success ms-2">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block imports %}
+<script type="text/javascript" src="{% static '/js/third_party_user_form.js' %}"></script>
+{% endblock %}

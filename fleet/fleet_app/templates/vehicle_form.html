@@ -1,0 +1,115 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+
+<div class="container flex-grow-1 px-5 pt-2">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión vehículos</h4>
+
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'vehicles' %}">Vehículos</a></li>
+            <li class="mx-2">|</li>
+            <li class="fw-lighter">{% if vehicle.placa %} {{ vehicle.placa }} {% else %} Nuevo {% endif %}</li>
+        </ul>
+
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">{% if vehicle.codigo %} Editar {% else %} Crear {% endif %} vehículo</h6>
+        </div>
+        <form action="" method="post" class="needs-validation" id="vehicle-form">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row mb-3">
+
+                    <div class="col-md-3 mb-3">
+                        <label for="select-vehicle-type" class="form-label">Tipo de vehículo</label>
+                        <select class="form-select"  id="select-vehicle-type" name="select-vehicle-type" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for vehicle_type in vehicle_types %}
+                            <option value="{{ vehicle_type.id }}" {% if vehicle.tipo.id == vehicle_type.id %} selected {% endif %} >{{ vehicle_type.descripcion }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3" >
+                        <label for="vehicle_id" class="form-label">Placa</label>
+                        <input type="text" class="form-control" id="vehicle_id"
+                            placeholder="ingrese la placa" value="{{ vehicle.placa }}" name="code" maxlength="6" {% if vehicle.placa %} disabled {% endif %} required>
+                    </div>
+             
+                    <div class="col-md-3 mb-3" id="brand-container">
+                        <label for="brand" class="form-label">Marca</label>
+                        <input type="text" class="form-control" id="brand"
+                        placeholder="ingrese la marca" name="brand" value="{{ vehicle.marca }}" maxlength="50" disabled>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="model" class="form-label">Modelo</label>
+                        <input type="number" class="form-control" id="model"
+                        placeholder="ingrese el modelo" name="model" value="{{ vehicle.modelo }}" maxlength="50" required>
+                    </div>
+                    <div class="col-md-3 mb-3" id="boxcar-container">
+                        <label for="boxcar" class="form-label">Número de furgón</label>
+                        <input type="number" class="form-control" id="boxcar"
+                        placeholder="ingrese el número del furgon" name="boxcar" value="{{ vehicle.furgon }}" maxlength="50" required>
+                    </div>
+                    <div class="col-md-3 mb-3" id="line-container">
+                        <label for="select-line" class="form-label">Línea</label>
+                        <select class="form-select" id="select-line" name="line" disabled>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for line in lines %}
+                            <option value="{{ line.id_linea }}" {% if vehicle.linea == line.nombre %} selected {% endif %} >{{ line.nombre }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="select-co" class="form-label">Centro de operación</label>
+                        <select class="form-select" id="select-co" name="co" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for operation_center in operations_center %}
+                            <option value="{{ operation_center.codigo }}" {% if operation_center.codigo == vehicle.centro_operacion.codigo %} selected {% endif %} >{{ operation_center.nombre }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+            
+                    <div class="col-md-3 mb-3">
+                        <label for="soat-expiration-date" class="form-label">Vencimiento SOAT</label>
+                        <input type="date" class="form-control" id="soat-expiration-date" placeholder="ingrese la fecha"
+                            name="soat-expiration-date" value="{{ vehicle.vencimiento_soat|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="insurance-company" class="form-label">Compañia de seguros</label>
+                        <input type="text" class="form-control" maxlength="20" id="insurance-company"
+                            placeholder="ingrese la compañia" value="{{ vehicle.compania_soat|default:'' }}" name="insurance-company" disabled>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="policy-number" class="form-label">Número de póliza</label>
+                        <input type="number" class="form-control" maxlength="20" id="policy-number"
+                            placeholder="ingrese el número de póliza" value="{{ vehicle.poliza }}" name="policy-number" required>
+                    </div>
+                </div>
+             
+            </div>
+            
+            <div class="card-footer bg-white justify-content-end d-flex py-3">
+                <a class="btn btn-secondary" type="button" href="{% url  'vehicles' %}">Descartar</a>
+                <button type="submit" class="btn btn-success ms-2">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block imports %}
+<script type="text/javascript" src="{% static '/js/vehicle_form.js' %}"></script>
+{% endblock %}

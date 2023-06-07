@@ -1,0 +1,144 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+
+<div class="container px-5 pt-2 flex-grow-1">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de inventarios</h4>
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'inventories' %}">Gestion de inventarios</a></li>
+            <li class="mx-2">|</li>
+            <li class="fw-lighter">Nuevo reporte</li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Crear reporte</h6>
+        </div>
+        <form action="" class="needs-validation">
+            <div class="card-body">
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <label for="select-co" class="form-label">Centro de operación <span
+                            class="text-danger">*</span> </label>
+                        <select class="form-select" aria-label="Default select example" id="select-co" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for operation_center in operations_center %}
+                            <option style="text-transform: lowercase;" value="{{ operation_center.codigo }}">{{operation_center.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="picker-date" class="form-label">Fecha de corte <span
+                            class="text-danger">*</span> </label>
+                        <input type="date" class="form-control" id="picker-date"
+                            placeholder="seleccione la fecha de corte" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="picker-date-start" class="form-label">Hora inicial <span
+                            class="text-danger">*</span></label>
+                        <input type="time" class="form-control" id="picker-date-start" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="picker-date-end" class="form-label">Hora Final <span
+                            class="text-danger">*</span> </label>
+                        <input type="time" class="form-control" id="picker-date-end" required>
+                    </div>
+
+                </div>
+                <div class="row mb-2">
+                    {% for item in packaging_items %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                <p class="card-title m-0">Cantidad de {{item.descripcion}}</p>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="check-{{item.id}}" checked> 
+                                    <label class="form-check-label" for="check-{{item.id}}">
+                                    Registrar
+                                    </label>
+                                
+                                </div>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">Código</label>
+                                    <input type="number" class="form-control" value="{{ item.codigo }}"
+                                        id="item-{{item.id}}" disabled>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">En Stock <span
+                                    class="text-danger">*</span> </label>
+                                    <input type="number" class="form-control reporter" min="0" id="stock-{{item.id}}" required>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">Toma fisica <span
+                                        class="text-danger">*</span></label>
+                                    <input type="number" class="form-control reporter" min="0" id="tf-{{item.id}}" required>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">Diferencia</label>
+                                    <input type="number" class="form-control" id="dif-{{item.id}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                                <p class="card-title m-0">Reporte registrado por</p>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-md-6 mb-2">
+                                    <label for="name" class="form-label">Nombre <span
+                                        class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name"
+                                        placeholder="ingrese su nombre completo" name="name" value="{{user.first_name}}"
+                                        required>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="job-title" class="form-label">Cargo <span
+                                        class="text-danger">*</span> </label>
+                                    <input type="text" class="form-control" id="job-title"
+                                        placeholder="ingrese su nombre completo" name="job-title" required>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="observations" class="form-label">Observaciones adicionales</label>
+                        <textarea class="form-control" id="observations" rows="4"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer bg-white justify-content-end d-flex py-3">
+                <a class="btn btn-secondary" href="{% url  'inventories' %}">Descartar</a>
+                <button type="submit" class="btn btn-success ms-2">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block imports%}
+
+<script type="text/javascript" src="{% static '/js/inventories_form.js' %}"></script>
+
+{% endblock %}

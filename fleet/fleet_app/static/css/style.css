@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --main-color: #A51717;
+    --secondary-color: rgb(251, 251, 251);
+    --text-light-color: rgba(0, 85, 255, 0.247);
+    --text-sec-color: #FFC511;
+    --bg-color: #ffffff;
+    --bg-secondary-color: #E5BFBF;
+    font-size: 14px;
+}
+
+ul {
+    list-style: none;
+}
+
+body {
+    font-weight: 500;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+nav {
+    width: 100%;
+    z-index: 1;
+    background-color: rgb(255, 255, 255);
+    box-shadow: -4px 4px 66px -6px rgb(141 151 178 / 15%);
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #112037;
+    overflow-x: hidden;
+    transition: 0.5s;
+  
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #f9f9f9;
+    display: block;
+    transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+
+.sidenav .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3.5rem;
+}
+
+.sidenav .closebtn {
+    font-size: 36px;
+}
+
+.menu-btn {
+    cursor: pointer;
+    color: #112037;
+}
+
+.menu-btn:hover {
+    opacity: 0.8;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-left: 250px;
+
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #dcdcdc;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(35, 54, 82);
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(1, 33, 60);
+}
+
+#avatar-container .dropdown-toggle::after {
+    display: none;
+}
+
+.sesion-actions {
+    margin: 0;
+    padding: 0;
+}
+
+.sesion-actions a:hover {
+    transition: all .2s ease;
+    background-color: #bfd5e5;
+    color: #022036;
+}
+
+.login-card {
+    box-shadow:
+        2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+        6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+        12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+        22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+        41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+        100px 100px 80px rgba(0, 0, 0, 0.07);
+
+}
+
+.fleet-title {
+    font-weight: 800;
+    color: var(--text-sec-color);
+    -webkit-text-stroke: 1px #646464;
+    padding: 0px;
+    margin: 0px;
+}
+
+.fleet-subtitle{
+    font-weight: 800;
+    color: #646464;
+}
+
+.fleet-title span {
+
+    color: var(--main-color);
+}
+
+
+.avatar {
+    background-color: var(--main-color);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.username-label {
+    text-decoration-line: none;
+    cursor: pointer;
+    color: rgb(69, 69, 69);
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.username-label:hover {
+
+    color: rgb(84, 20, 20)
+}
+
+.welcome-message {
+    font-weight: 300;
+    color: gray;
+}
+
+.welcome-message span {
+    font-weight: 800;
+}
+
+.avatar p {
+    padding: 0;
+    margin: 0;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.nav-link {
+    font-weight: 700;
+}
+
+.nav-link i {
+    margin-right: 10px;
+}
+.nested-list{
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-color: #6e5858;
+    margin-left: 4px;
+    /* background-color: #3f1111;
+    border-radius: 8px; */
+}
+.nav-nested-link i{
+    font-size: 7px;
+    margin-right: 8px;
+    margin-bottom: 3px
+}
+
+
+.active-page {
+    background-color: rgba(255, 255, 255, 0.277);
+    border-radius: 8px;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+
+.nav-link:hover {
+    color: var(--main-color);
+}
+
+.custom-breadcrumb a {
+    color: rgb(59, 59, 59);
+
+}
+
+footer {
+    min-height: 4rem;
+    background-color: #717c9129;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #403d3d;
+    font-size: 14px;
+    margin-top: 47px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.form-control {
+    border-radius: 12px;
+    /* background-color: rgb(252, 245, 237); */
+}
+
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #feb586;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(253 141 13 / 25%);
+}
+
+
+.form-select {
+    border-radius: 12px;
+}
+
+.form-select:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #feb586;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(253 141 13 / 25%);
+}
+
+.ms-container {
+    max-width: 75% !important;
+    width: 100%;
+}
+
+
+
+#avatar-container-mobile {
+    display: none;
+    margin: 8px 12px;
+    background-color: #ffffff32;
+    border-radius: 12px;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+}
+
+.select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 31px;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    position: absolute;
+    top: 2px;
+    right: 1px;
+    width: 20px;
+}
+
+.select2-container--open{
+    z-index: 2000;
+}
+
+@media screen and (max-width:450px) {
+
+    #avatar-container {
+        display: none !important;
+    }
+
+    #avatar-container-mobile {
+        display: block;
+        padding: 1rem 0;
+    }
+
+    .ms-container {
+        max-width: 100% !important;
+
+    }
+
+    .sidenav {
+        left: -250px;
+    }
+
+    #main {
+        margin-left: 0px !important
+    }
+    .btns-report {
+        justify-content: center;
+    }
+    .btns-report  button{
+        margin: 8px 0!important;
+
+    }
+    .btns-report  a{
+        margin: 8px 0!important;
+    }
+}
+
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}

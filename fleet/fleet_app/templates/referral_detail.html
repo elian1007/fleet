@@ -1,0 +1,472 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% load helpers %}
+
+
+<!-- Modal Documents -->
+<div class="modal modal-lg" tabindex="-1"  id="modal-documents" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Formulario de documentos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" class="needs-validation" id="document-form">
+                {% csrf_token %}
+                <input type="hidden" value="" id="document-id">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 my-2">
+                            <label for="select-doc-type" class="form-label">Tipo de documento <span
+                                class="text-danger">*</span> </label>
+                            <select class="form-select" id="select-doc-type" name="select-doc-type" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for document_type in doc_types %}
+                                    <option value="{{ document_type.id }}" >{{ document_type.id }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="doc-number" class="form-label">Número de documento <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control"  id="doc-number"
+                                placeholder="ingrese el número del documento" value="" name="doc-number" required>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="weight" class="form-label">Kilos <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="0.01" id="weight"
+                                placeholder="ingrese el peso" value="" name="weight" required>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="units" class="form-label">Unidades <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="1" id="units"
+                                placeholder="ingrese el número de unidades" value="" name="units" required>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="select-product-type" class="form-label">Producto transportado <span
+                                class="text-danger">*</span> </label>
+                            <select class="form-select" id="select-product-type" name="select-product-type" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for product_type in product_types %}
+                                    <option value="{{ product_type.id }}" >{{ product_type.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="punnets" class="form-label">No de canastillas <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="1" id="punnets"
+                                placeholder="ingrese el número de canastillas" value="" name="punnets" required>
+                        </div>
+                        <div class="col-md-4 my-2">
+                            <label for="security-seals" class="form-label">Sellos de seguridad <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="1" id="security-seals"
+                                placeholder="ingrese los sellos de seguridad" value="" name="security-seals" required>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="select-business-type" class="form-label">Tipo de negocio <span
+                                class="text-danger">*</span> </label>
+                            <select class="form-select" id="select-business-type" name="select-business-type" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for business_type in business_types %}
+                                    <option value="{{ business_type.id }}" >{{ business_type.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 my-2">
+                            <label for="select-arrival-to" class="form-label">Nombre / Destino <span
+                                class="text-danger">*</span> <i class="fa-solid fa-spinner fa-spin ms-2"
+                                id="load-options" style="display: none;"></i></label>
+                            <select class="form-select" id="select-arrival-to" name="select-arrival-to" required>
+                                <option value="" selected>Seleccione una opción</option>
+                            
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 my-2">
+                            <label for="select-city-doc" class="form-label">Ciudad <span
+                                class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="ciudad" id="select-city-doc" name="select-city-doc" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for city in cities %}
+                                    <option value="{{ city.codigo }}" >{{ city.nombre }} ({{ city.codigo_departamento.nombre }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+          
+            </form>
+          
+      </div>
+    </div>
+</div>
+<!-- End Modal Documents -->
+
+<!-- Modal Documents dev -->
+<div class="modal modal-md" tabindex="-1"  id="modal-documents-dev" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Información de retorno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post" class="needs-validation" id="document-dev-form">
+                {% csrf_token %}
+                <input type="hidden" value="" id="document-dev-id">
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6 my-2">
+                            <label for="select-business-dev" class="form-label">Tipo de negocio <span
+                                class="text-danger">*</span> </label>
+                            <select class="form-select" id="select-business-dev" name="select-business-dev" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for business_type in business_types %}
+                                    <option value="{{ business_type.id }}" >{{ business_type.descripcion }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <label for="select-origin" class="form-label">Origen <span
+                                class="text-danger">*</span> <i class="fa-solid fa-spinner fa-spin ms-2"
+                                id="load-options-dev" style="display: none;"></i></label>
+                            <select class="form-select" id="select-origin" name="select-origin" required>
+                                <option value="" selected>Seleccione una opción</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <label for="punnets-dev" class="form-label">Canastillas retornadas <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="1" id="punnets-dev"
+                                placeholder="ingrese el número de canastillas" value="" name="punnets-dev" required>
+                        </div>
+                        <div class="col-md-6 my-2">
+                            <label for="weight-dev" class="form-label">Kilos <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="0.01" id="weight-dev"
+                                placeholder="ingrese el peso" value="" name="weight-dev" required>
+                        </div>
+
+                        <div class="col-md-6 my-2">
+                            <label for="units-dev" class="form-label">Unidades <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" step="1" id="units-dev"
+                                placeholder="ingrese el número de unidades" value="" name="units-dev" required>
+                        </div>
+
+                        <div class="col-md-12 my-2">
+                            <label for="observations-dev" class="form-label">Observaciones </label>
+                            <textarea type="number" class="form-control text-left" id="observations-dev" placeholder="ingrese sus observaciones" rows="3" value="" name="units" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Descartar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>         
+      </div>
+    </div>
+</div>
+<!-- End Modal Documents dev -->
+
+<div class="container flex-grow-1 px-5 pt-2">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de remisiones</h4>
+
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'referrals' %}">Remisiones</a></li>
+            <li class="mx-2">|</li>
+            <li class=" ">{{ referral.id_remision }}</li>
+        </ul>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+                    <h6 class="card-title m-0 fw-bold">Detalles de la remisión</h6>
+                    <h6 class="card-title m-0 fw-bold">No{{ referral.id_remision }}</h6>
+                </div>
+
+                <div class="card-body">
+                    <input type="hidden" id="referral-id" value="{{ referral.id_remision }}">
+                    <input type="hidden" id="referral-state" value="{{ referral.estado }}">
+
+                    <div class="alert alert-primary text-uppercase text-center" role="alert">
+                       Remisión {{ referral.estado }}
+                    </div>
+
+                    <div class="mb-3">
+                        <h6 class="text-secondary">Inicio del cargue</h6>
+                        <h5 class="fw-bold">{{ referral.fecha_expedicion|date:'Y-m-d H:m' }}</h5>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-secondary">Fecha y hora del depacho</h6>
+                        <h5 class="fw-bold">{% if referral.fecha_despacho %} {{ referral.fecha_despacho }} {% else %} No registra {% endif %} </h5>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-secondary">Empresa</h6>
+                        <h5 class="fw-bold">{{ referral.nit.nombre }} ({{ referral.nit.nit }})</h5>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-secondary">Fecha límite de entrega</h6>
+                        <h5 class="fw-bold">{{ referral.fecha_entrega|date:'Y-m-d' }} </h5>
+                    </div>
+                    <div class="mb-3"> 
+                        <h6 class="text-secondary">Vehículo</h6>
+                        <h5 class="fw-bold">{{referral.placa.placa}}</h5>
+                    </div>
+                    <hr>
+                    <div class="form-group mb-3">
+                        <form action="" id="vehicle-form">
+
+                            <label for="select-driver" class="form-label text-secondary">Conductor</label>
+                            {% if not referral.conductor %}
+                                <select class="form-select" id="select-driver" name="driver" required>
+                                    <option value="">Seleccione una opción</option>
+                                    {% for driver in drivers %}
+                                    <option value="{{ driver.cedula }}" {% if referral.conductor.cedula|to_int == driver.cedula %} selected {% endif %} >{{ driver.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <button title="Guardar conductor" type="submit" class="btn btn-primary p-1 mt-2">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                            {% else %}
+                                
+                                <h5 class="fw-bold">{{referral.conductor.nombre}}</h5>
+                                
+                            {% endif %}
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <form action="" id="city-form">
+                            <label for="select-city" class="form-label text-secondary">Ciudad destino</label>
+                            {% if not referral.codigo_ciudad %}
+                            <select class="form-select" aria-label="ciudad" id="select-city" name="city" required>
+                                <option value="" selected>Seleccione una opción</option>
+                                {% for city in cities %}
+                                    <option value="{{ city.codigo }}" {% if referral.codigo_ciudad.codigo == city.codigo %} selected {% endif %} >{{ city.nombre }} ({{ city.codigo_departamento.nombre }})</option>
+                                {% endfor %}
+                            </select>
+                            <button title="Guardar ciudad destino" type="submit" class="btn btn-primary p-1 mt-2">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                            {% else %}
+                                
+                                <h5 class="fw-bold">{{referral.codigo_ciudad.nombre}} ({{referral.codigo_ciudad.codigo_departamento.nombre}})</h5>
+                            
+                            {% endif %}
+                            
+                        </form>
+                    </div>
+                    <hr>
+
+                    <div class="d-flex flex-row align-items-center justify-content-center flex-wrap mt-3">
+                        {% if perms.fleet_app.change_doc_remision and referral.estado == 'abierta' %}
+                            <button onclick="changeReferralState('generada')" type="button" class="btn btn-danger ms-2 my-2" >
+                                 Despachar <i class="fa-solid fa-share-from-square"></i>
+                            </button>
+                        {% endif %}
+                        
+                        {% if perms.fleet_app.change_remisiones and referral.estado != 'anulada' and referral.estado != 'cerrada' %}
+                            <button onclick="changeReferralState('anulada')" title="anular remisión" type="button" class="btn btn-info ms-2 my-2" >
+                                Anular <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if perms.fleet_app.change_remisiones and referral.estado == 'generada' %}
+                        <button onclick="changeReferralState('retornada')" title="retornar vehículo" type="button" class="btn btn-warning ms-2 my-2" >
+                            Retornar vehículo <i class="fa-solid fa-arrow-rotate-left"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if perms.fleet_app.view_remisiones and referral.estado == 'generada' or referral.estado == 'cerrada' or referral.estado == 'retornada' %}
+                        <a href="{% url  'print_referral' pk=referral.id_remision %}" title="retornar vehículo" class="btn btn-primary ms-2 my-2" >
+                            Imprimir remisión <i class="fa-solid fa-print"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if perms.fleet_app.change_remisiones and referral.estado == 'retornada' %}
+                            <button onclick="changeReferralState('cerrada')" title="cerrar remisión" type="button" class="btn btn-success ms-2 my-2" >
+                                 Cerrar <i class="fa-solid fa-gear"></i>
+                            </button>
+                        {% endif %}
+
+                    
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="card mt-3">
+                <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+                    <h6 class="card-title m-0 fw-bold">Siscombas</h6>
+                </div>
+
+                <div class="card-body">
+                    <form action="" method="post" class="needs-validation" id="siscombas-form">
+                        <input id="siscombas-id" type="hidden" value='{% if siscombas %}{{ siscombas.id }}{% endif %}'>
+                        <div class="row mb-3">
+                            <div class=" my-2">
+                                <label for="ticket-number" class="form-label">Número de tiquete <span
+                                    class="text-danger">*</span></label>
+                                {% if perms.fleet_app.add_siscombas and referral.estado != 'cerrada' and referral.estado != 'anulada' %}    
+                                <input type="number" class="form-control"id="ticket-number"
+                                    placeholder="ingrese el número del tiquete" value="{% if siscombas %}{{ siscombas.num_tiquete }}{% endif %}" name="ticket-number" required>
+                            
+                                {% else %}    
+                                    <h5 class="fw-bold">{% if siscombas %} {{ siscombas.num_tiquete }} {% else %} No registra {% endif %}</h5>
+                                {% endif %}  
+                                </div>
+                            <div class="my-2">
+                                <label for="ticket-weight" class="form-label">Peso neto tiquete <span
+                                    class="text-danger">*</span></label>
+                                {% if perms.fleet_app.add_siscombas and referral.estado != 'cerrada' and referral.estado != 'anulada' %}  
+                                    <input type="number" class="form-control" step="0.01"  id="ticket-weight"
+                                        placeholder="ingrese el peso" value='{% if siscombas %}{{ siscombas.peso_tiquete|format:"{:0.2f}" }}{% endif %}' name="ticket-weight" required>
+                                {% else %}    
+                                    <h5 class="fw-bold">{% if siscombas %} {{ siscombas.peso_tiquete|format:"{:0.2f}" }} {% else %} No registra {% endif %}</h5>
+                                {% endif %}  
+                                
+                                </div>
+                            {% if perms.fleet_app.add_siscombas and referral.estado != 'cerrada' and referral.estado != 'anulada' %} 
+                                <div class="my-2 d-flex align-items-end">
+                                    <button type="submit" title="Guardar ciudad destino" class="btn btn-primary p-1 mt-2">Guardar <i class="fa-solid fa-floppy-disk"></i></button>
+                                </div>
+                            {% endif %} 
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+                    <h6 class="card-title m-0 fw-bold"><i class="fa-regular fa-file-lines"></i> Listado de documentos</h6>
+                    <div class="d-flex flex-row align-items-center">
+                        {% if perms.fleet_app.add_doc_remision  and referral.estado == 'abierta' %}
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modal-documents">
+                                <i class="fa-solid fa-plus"></i> Nuevo documento
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="documents_table" class="table nowrap responsive table-striped dt-responsive"
+                        width="100%">
+                        <thead>
+                            <tr>
+                                <th data-priority="1">Tipo Doc</th>
+                                <th>Número Doc</th>
+                                <th>Kilos</th>
+                                <th>Unidades</th>
+                                <th>Producto</th>
+                                <th>Número Canastillas</th>
+                                <th>Sellos de Seguridad</th>
+                                <th>Tipo de Negocio</th>
+                                <th>Destino</th>
+                                <th>Ciudad</th>
+                                <th>Opciones</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th data-priority="1">Tipo Doc</th>
+                                <th>Número Doc</th>
+                                <th>Kilos</th>
+                                <th>Unidades</th>
+                                <th>Producto</th>
+                                <th>Número Canastillas</th>
+                                <th>Sellos de Seguridad</th>
+                                <th>Tipo de Negocio</th>
+                                <th>Destino</th>
+                                <th>Ciudad</th>
+                                <th>Opciones</th>  
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+                    <h6 class="card-title m-0 fw-bold"><i class="fa-solid fa-rotate-left"></i> Información de retorno</h6>
+                    <div class="d-flex flex-row align-items-center">
+                        {% if perms.fleet_app.add_dev_remision and referral.estado == 'retornada' %}
+
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#modal-documents-dev">
+                                <i class="fa-solid fa-plus"></i> Agregar Información de retorno
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="documents_table_dev" class="table nowrap responsive table-striped dt-responsive"
+                        width="100%">
+                        <thead>
+                            <tr>
+                                <th data-priority="1">Tipo de Negocio</th>
+                                <th>Origen</th>
+                                <th>Número Canastillas</th>
+                                <th>Kilos</th>
+                                <th>Unidades</th>
+                                <th>Observaciones</th>
+                                <th>Opciones</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th data-priority="1">Tipo de Negocio</th>
+                                <th>Origen</th>
+                                <th>Número Canastillas</th>
+                                <th>Kilos</th>
+                                <th>Unidades</th>
+                                <th>Observaciones</th>
+                                <th>Opciones</th>  
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+{% endblock %}
+
+
+{% block imports %}
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_doc_remision %}true{% else %} false{% endif %};
+    var hasPermDocDevChange = {% if perms.fleet_app.change_dev_remision %}true{% else %} false{% endif %};
+</script>
+<script type="text/javascript" src="{% static '/js/referral_detail.js' %}"></script>
+{% endblock %}

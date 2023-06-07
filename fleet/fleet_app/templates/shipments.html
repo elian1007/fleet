@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de despachos</h4>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Listado de despachos</h6>
+            <div class="d-flex flex-row align-items-center">
+                {% if perms.fleet_app.add_domicilios %}
+                    <a class="btn btn-success ms-2" href="{% url  'new_shipment' %}"><i class="fa-solid fa-plus"></i> Nuevo despacho</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="shipments_table" class="table nowrap responsive table-striped dt-responsive"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Zona</th>
+                        <th>Centro de operación</th>
+                        <th>Placa</th>
+                        <th>Fecha</th>
+                        <th>Kilos</th>
+                        <th>Observación</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th data-priority="1">Zona</th>
+                        <th>Centro de operación</th>
+                        <th>Placa</th>
+                        <th>Fecha</th>
+                        <th>Kilos</th>
+                        <th>Observación</th>
+                        <th>Opciones</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block imports %}
+
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_domicilios  %}true{% else %}false{%endif%};
+    var hasPermDelete = {% if perms.fleet_app.delete_domicilios  %}true{% else %}false{%endif%};
+</script>
+<script type="text/javascript" src="{% static '/js/shipments.js' %}"></script>
+{% endblock %}

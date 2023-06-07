@@ -1,0 +1,711 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% load helpers %}
+
+
+<div style="width:100%;" class="referral-report-container">
+    <div class="datagrid" style="width:98%; margin-top:1%; clear:left;">
+        <table>
+            <thead>
+                <tr>
+                    <th>PLANILLA DE DESPACHO DON POLLO S.A.S</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="width:100%; margin: 1% auto 0px;">
+        <div style="float:left; width:10%; margin-left:1%">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="{% static '/img/logo.png' %}" width="90%"  />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datagrid" style="float:left; width:75%; margin-left:1%; margin-bottom:1%">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="6">DATOS DE LA EMPRESA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th style="width:18%">EMPRESA</th>
+                        <th style="width:10%">NIT</th>
+                        <th style="width:15%">CIUDAD</th>
+                        <th style="width:30%">DIRECCIÓN</th>
+                        <th style="width:17%">CONTACTO</th>
+                        <th style="width:10%">TELEFONO</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{referral.nit.nombre}}
+                        </td>
+                        <td id="nit-1" data-nit="{{referral.nit.nit}}">
+                            {{referral.nit.nit}}
+                        </td>
+                        <td>
+                        
+                            {{referral.nit.codigo_ciudad.nombre}} ({{referral.nit.codigo_ciudad.codigo_departamento.nombre}})
+                        </td>
+                        <td>
+                            {{referral.nit.direccion}}
+                        </td>
+                        <td>
+                            {{referral.nit.contacto}}
+                        </td>
+                        <td>
+                            {{referral.nit.telefono}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="datagrid" style="float:left; width:10%; margin-left:1%">
+            <table>
+                <thead>
+                    <tr>
+                        <th>REMISIÓN No.<br> &nbsp;&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{referral.id_remision}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Información manifiesto carga -->
+    <div class="datagrid" style="width:98%; margin-top:1%; clear:left;">
+        <table>
+            <thead>
+                <tr>
+                    <th>INFORMACIÓN DEL MANIFIESTO DE CARGA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:20%;">FECHA DE EXPEDICIÓN</th>
+                                    <th style="width:30%;">ORIGEN DE VIAJE</th>
+                                    <th style="width:30%;">DESTINO DE VIAJE</th>
+                                    <th style="width:20%;">FECHA LIMITE ENTREGA DE CARGA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {{referral.fecha_expedicion|date:'d/m/Y'}}
+                                    </td>
+                                    <td>ARMENIA (QUINDÍO)</td>
+                                    <td>
+                                        {{referral.codigo_ciudad.nombre}} ({{referral.codigo_ciudad.codigo_departamento.nombre}})
+                                    </td>
+                                    <td>
+                                        {{referral.fecha_entrega|date:'d/m/Y'}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Fin Información manifiesto carga -->
+    <div class="datagrid" style="width:98%; margin-top:1%;">
+        <table>
+            <thead>
+                <tr>
+                    <th>INFORMACION DEL VEHÍCULO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>PLACA / CAPACIDAD </th>
+                                    <th>TIPO</th>
+                                    <th>MARCA</th>
+                                    <th>LÍNEA</th>
+                                    <th>MODELO</th>
+                                    <th>PESO VACÍO</th>
+                                    <th rowspan="4">SOAT</th>
+                                    <th>COMPAÑIA DE SEGUROS SOAT</th>
+                                    <th>VENCIMIENTO</th>
+                                    <th>No. POLIZA</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?php echo (isset($row_remision) && $row_remision != '' ? $row_remision["placa"] :  '').' / '.(isset($row_capacidad_carga['capacidad_carga']) && $row_capacidad_carga['capacidad_carga'] != '' ?  $row_capacidad_carga['capacidad_carga'] : 'Sin capacidad de carga'); ?>
+                                        {{referral.placa.placa}} / {{vehicle_capacity.capacidad_carga|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        {{referral.placa.tipo.descripcion|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        
+                                        {{referral.placa.marca|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        
+                                        {{referral.placa.linea|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        {{referral.placa.modelo|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        {{referral.peso_vacio|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        {{referral.placa.compania_soat|default:"No registra"}}
+                                    </td>
+                                    <td>
+                                        
+                                        {{referral.placa.vencimiento_soat|date:"d/m/Y"}}
+                                    </td>
+                                    <td>
+                                        {{referral.placa.poliza|default:"No registra"}}
+                                    </td>
+                                </tr>
+                                <!-- Es un cabezote -->
+                                {% if referral.placa.tipo.id == 3 and referral.trailer  %}
+                                    <tr>
+                                        <th colspan="2">PLACA TRAILER / CAPACIDAD</th>
+                                        <th colspan="2">MARCA</th>
+                                        <th>LÍNEA</th>
+                                        <th>MODELO</th>
+                                        <th>COMPAÑIA DE SEGUROS SOAT</th>
+                                        <th>VENCIMIENTO</th>
+                                        <th>No. POLIZA</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <?php echo $row_remision["trailer"].' / '.($row_capacidad_carga_trailer['capacidad_carga'] ?  $row_capacidad_carga_trailer['capacidad_carga'] : 'Sin capacidad de carga'); ?>
+                                            {{referral.trailer.placa}} / {{trailer_vehicle_capacity.capacidad_carga|default:"No registra"}}
+                                        </td>
+                                        <td colspan="2">
+                                            <?php echo $row_trailer_remision["marca"]; ?>
+                                            {{referral.trailer.marca|default:'No registra'}}
+                                        </td>
+                                        <td>
+                                            <?php echo $row_trailer_remision["linea"]; ?>
+                                            {{referral.trailer.linea|default:'No registra'}}
+                                        </td>
+                                        <td>
+                                            <?php echo $row_trailer_remision["modelo"]; ?>
+                                            {{referral.trailer.modelo|default:'No registra'}}
+                                        </td>
+                                        <td>
+                                            <?php echo $row_trailer_remision["compania_soat"]; ?>
+                                            {{referral.trailer.compania_soat|default:'No registra'}}
+                                        </td>
+                                        <td>
+                                            <?php echo date_format($row_trailer_remision["vencimiento_soat"], "d/m/Y"); ?>
+                                            {{referral.trailer.vencimiento_soat|date:'d/m/Y'|default:'No registra'}}
+                                        </td>
+                                        <td>
+                                            <?php echo $row_trailer_remision["poliza"]; ?>
+                                            {{referral.trailer.poliza|default:'No registra'}}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+                                <!-- Fin es un cabezote -->
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% if referral_documents_count == 0 %}
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>PROPIETARIO DEL VEHÍCULO</th>
+                                    <th>DOC. IDENTIFICACIÓN No.</th>
+                                    <th>DIRECCIÓN DEL PROPIETARIO</th>
+                                    <th>TELÉFONO DEL PROPIETARIO</th>
+                                    <th>CIUDAD Y DEPARTAMENTO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td >
+                                        {{referral.nit.nombre}}
+                                    </td>
+                                    <td id="nit-2" data-nit="{{referral.nit.nit}}">
+                                        {{referral.nit.nit}}
+                                    </td>
+                                    <td>
+                                        {{referral.nit.direccion}}
+                                    </td>
+                                    <td>
+                                        {{referral.nit.telefono}}
+                                    </td>
+                                    <td>
+                                        {{referral.nit.codigo_ciudad.nombre}} ({{referral.nit.codigo_ciudad.codigo_departamento.nombre}})
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CONDUCTOR DEL VEHÍCULO</th>
+                                    <th>DOC. IDENTIFICACIÓN No.</th>
+                                    <th>DIRECCIÓN</th>
+                                    <th>TELÉFONO</th>
+                                    <th>CIUDAD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {{referral.conductor.nombre}}
+                                    </td>
+                                    <td>
+                                        {{referral.conductor.cedula}}
+                                    </td>
+                                    <td>
+                                        {{referral.conductor.direccion}}
+                                    </td>
+                                    <td>
+                                        {{referral.conductor.telefono}}
+                                    </td>
+                                    <td>
+                                        {{referral.conductor.codigo_ciudad.nombre}} ({{referral.conductor.codigo_ciudad.codigo_departamento.nombre}})
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="datagrid" style="width:98%; text-align:center; margin-top:1%;">
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>INFORMACIÓN DEL PRODUCTO TRANSPORTADO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:4%;">TIPO<br>DOC.</th>
+                                    <th style="width:4%;">No.<br>DOC.</th>
+                                    <th style="width:4%;">PESO<br>KILOS</th>
+                                    <th style="width:4%;">UNDS.</th>
+                                    <th style="width:12%;">PRODUCTO</th>
+                                    <th style="width:4%;">No.<br>CANAST.</th>
+                                    <th style="width:4%;">PESO<br>CANAST.</th>
+                                    <th style="width:4%;">SELLOS DE<br>SEGURIDAD</th>
+                                    <th style="width:4%;">TOTAL<br>KILOS</th>
+                                    <th style="width:14%;">TIPO DE<br>NEGOCIO</th>
+                                    <th style="width:14%;">DESTINO &frasl; NOMBRE</th>
+                                    <th style="width:14%;">CIUDAD</th>
+                                    <th style="width:14%;">FIRMA<br>RECIBIDO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   
+                            {% for document in referral_documents %}
+                                <tr>
+                                    <td>
+                                        {{document.id_tipo_doc.id}}
+                                    </td>
+                                    <td>
+                                        {{document.numero_doc}}
+                                    </td>
+                                    <td>
+                                        {{document.kilos}}
+                                    </td>
+                                    <td>
+                                        {{document.unidades}}
+                                    </td>
+                                    <td>
+                                        {{document.producto.descripcion}}
+                                    </td>
+                                    <td>
+                                        {{document.canastillas}}
+                                    </td>
+                                    <td>
+                                        {{ document.canastillas|add:document.canastillas }}
+                                    </td>
+                                    <td>
+                                        
+                                        {{document.sellos}}
+                                    </td>
+                                    <td>
+                                        {{ document.canastillas|add:document.canastillas|add:document.kilos }}
+                                    </td>
+                                    <td>
+                                        {{document.unidad_negocio.descripcion}}
+                                    </td>
+                                    <td>
+                                        {% if document.unidad_negocio.id == 1 %}
+
+                                            {{document.id_centro_operacion.nombre|default:'No registra'}}
+
+                                        {% else %}
+
+                                            {{document.id_tercero.nombre|default:'No registra'}}
+
+                                        {% endif%}
+                                    </td>
+                                    <td>
+                                        
+                                        {{document.codigo_ciudad.nombre}} ({{document.codigo_ciudad.codigo_departamento.nombre}})
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>TOTAL UNIDADES</th>
+                                    <th>TOTAL KILOS PRODUCTO</th>
+                                    <th>TOTAL CANASTILLAS</th>
+                                    <th>TOTAL PESO CANASTILLAS</th>
+                                    <th>TOTAL PESO CARGA / EFICIENCIA</th>
+                                    <th>PESO BRUTO DEL VEHÍCULO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {{ totals_doc_referral.total_units}}
+                                    </td>
+                                    <td>
+                                        {{ totals_doc_referral.total_product_weight }}
+                                    </td>
+                                    <td>
+                                        {{ totals_doc_referral.total_punnets}}
+                                    </td>
+                                    <td>
+                                        {{ totals_doc_referral.total_punnets_weight }}
+                                    </td>
+                                    <td>
+                                        {{totals_doc_referral.total_weight}} / Eficiencia: {{ totals_doc_referral.total_weight_efficiency }}
+                                    </td>
+                                    <td>
+                                        {{totals_doc_referral.total_gross_weight}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="datagrid" style="width:98%; margin-top:1%; clear:left;">
+        <table>
+            <thead>
+                <tr>
+                    <th>SISCOMBAS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:40%;">NÚMERO TIQUETE</th>
+                                    <th style="width:30%;">PESO NETO</th>
+                                    <th style="width:30%;">DIFERENCIA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        {{siscombas.num_tiquete|default:'No registra'}}
+                                    </td>
+                                    <td>
+                                        {{siscombas.peso_tiquete|default:'No registra'}}
+                                    </td>
+                                    <td>
+                                        {{totals_doc_referral.siscombas_dif}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="datagrid" style="width:98%; text-align:center; margin-top:1%;">
+        <table>
+            <thead>
+                <tr>
+                    <th>INFORMACIÓN DE RETORNO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:15%;">TIPO DE NEGOCIO</th>
+                                    <th style="width:15%">ORIGEN</th>
+                                    <th style="width:10%;">No. CANAST.</th>
+                                    <th style="width:10%;">KILOS</th>
+                                    <th style="width:10%">UNDS.</th>
+                                    <th style="width:30%">OBSERVACIONES</th>
+                                         
+                                    {% if referral_documents_dev|length == 0 %}
+                                    <th style="width:10%">FIRMA ENTREGA</th>
+                                    {% endif %}
+                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if referral_documents_dev|length > 0 %}
+
+                                {% for document_dev in referral_documents_dev %}
+                                <tr>
+                                    <td>
+                             
+                                        {{document_dev.unidad_negocio.descripcion}}
+                                    </td>
+                                    <td>
+                                       
+
+                                        {% if document_dev.unidad_negocio.id == 1 %}
+                                            {{document_dev.id_centro_operacion.nombre}}
+                                        {% else %}
+                                            {{document_dev.id_tercero.nombre}}
+                                        {% endif %}
+                                    
+                                    </td>
+                                    <td>
+                                        
+                                        {{document_dev.canastillas}}
+                                    </td>
+                                    <td>
+                                        
+                                        {{document_dev.kilos}}
+                                    </td>
+                                    <td>
+                                        
+                                        {{document_dev.unidades}}
+                                    </td>
+                                    <td>
+                                        {{document_dev.observaciones}}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="datagrid" style="width:98%; text-align:center; margin-top:1%;">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:50%;">FIRMA CONDUCTOR</th>
+                    <th style="width:50%;">FIRMA BÁSCULA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>  
+
+<div id="print-btn-container" class="d-flex justify-content-center">
+    <button type="button" class="btn btn-secondary me-2" type="button" onclick="history.back()">Volver atrás</button>
+    <button  type="button" class="btn btn-primary pulse-btn" onclick="print()">Imprimir <i class="fa-solid fa-print"></i></button>
+</div>
+
+<style>
+    /* CSS Referral print */
+
+    .datagrid table {
+        border-collapse: collapse;
+        text-align: center;
+        width: 100%;
+    }
+
+    .datagrid {
+        font: normal 8px/150% Geneva, Arial, Helvetica, sans-serif;
+        background: #fff;
+        overflow: hidden;
+        border: 1px solid #00557F;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 99%;
+    }
+
+    .datagrid th {
+        background-color: #006699;
+        color: #FFFFFF;
+        font-size: 9px;
+        font-weight: bold;
+        border: 1px solid #DBDBDB;
+        text-align: center;
+    }
+
+    .datagrid td {
+        color: #00557F;
+        border: 1px solid #DBDBDB;
+        font-size: 8px;
+        font-weight: normal;
+    }
+
+    .datagrid thead tr th,
+    .datagrid tbody tr th {
+        border-top: none;
+    }
+
+    .datagrid thead th:first-child,
+    .datagrid tbody th:first-child {
+        border-left: none;
+    }
+
+    .datagrid thead th:last-child,
+    .datagrid tbody th:last-child {
+        border-right: none;
+    }
+
+    .datagrid tbody tr td,
+    .datagrid tbody tr th {
+        border-bottom: none;
+    }
+
+    .datagrid tbody td:first-child {
+        border-left: none;
+    }
+
+    .datagrid tbody td:last-child {
+        border-right: none;
+    }
+    .referral-report-container{
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .pulse-btn{
+        transform: scale(1);
+	    animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(3, 52, 120, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(0, 49, 109, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 #06355800;
+        }
+    }
+
+    @media print {
+
+        #mySidenav {
+            display: none !important;
+            width: 0;
+            transform: translateX(-200);
+        }
+
+        #main {
+            margin-left: 0 !important;
+        }
+
+        #print-btn-container{
+            display: none !important;
+        }
+
+        .navbar {
+            display: none !important;
+        }
+
+        footer {
+            display: none !important;
+        }
+    }
+</style>
+
+
+{% endblock %}
+
+
+
+{% block imports %}
+<script>
+    let nitCell=document.getElementById('nit-1')
+    let nitCell2=document.getElementById('nit-2')
+    nitCell.append(`- ${calcularDigitoVerificacion(nitCell.dataset.nit)}`)
+    nitCell2.append(`- ${calcularDigitoVerificacion(nitCell.dataset.nit)}`)
+</script>
+{% endblock %}

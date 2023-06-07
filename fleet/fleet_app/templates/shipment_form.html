@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+
+<div class="container flex-grow-1 px-5 pt-2">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de despachos</h4>
+
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'shipments' %}">Despachos</a></li>
+            <li class="mx-2">|</li>
+            <li class="fw-lighter">{% if shipment.id %} {{ shipment.id }} {% else %} Nuevo {% endif %}</li>
+        </ul>
+
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">{% if shipment.id %} Editar {% else %} Crear {% endif %} despacho</h6>
+        </div>
+        <form action="" method="post" class="needs-validation" id="form-shipments">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="row mb-3">
+                   <input type="hidden" id="shipment-id" value="{{ shipment.id }}">
+                    <div class="col-md-3 my-2">
+                        <label for="select-vehicle-id" class="form-label">Placa del vehículo</label>
+                        <select class="form-control"  id="select-vehicle-id" name="vehicle-id" required>
+                            <option value="" {% if not shipment.codigo %} selected {% endif %}>Seleccione una opción</option>
+                            {% for vehicle in vehicles %}
+                            <option value="{{ vehicle.placa }}" {% if vehicle.placa == shipment.placa.placa %} selected {% endif %} >{{ vehicle.placa }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 my-2">
+                        <label for="weight" class="form-label">Kilos</label>
+                        <input type="number" step="0.01" class="form-control" id="weight"
+                            placeholder="ingrese el número de kilos" value='{{ shipment.kilos }}' name="weight" required>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="date" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="date"
+                        value="{{ shipment.fecha|date:'Y-m-d' }}" name="date" required>
+                    </div>
+                    <div class="col-md-12 my-2">
+                        <label for="observations" class="form-label">Observaciones</label>
+                        <textarea class="form-control" name="observations" id="observations" placeholder="Ingrese aquí las observaciones" cols="30" rows="10">{{ shipment.observacion}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white justify-content-end d-flex py-3">
+                <a class="btn btn-secondary" type="button" href="{% url  'shipments' %}">Descartar</a>
+                <button type="submit" class="btn btn-success ms-2">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block imports %}
+<script type="text/javascript" src="{% static '/js/shipments_form.js' %}"></script>
+{% endblock %}

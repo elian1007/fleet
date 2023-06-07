@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de terceros</h4>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Listado de terceros</h6>
+            <div class="d-flex flex-row align-items-center">
+                {% if perms.fleet_app.add_terceros %}
+                    <a class="btn btn-success ms-2" href="{% url  'add_third_party_users' %}"><i class="fa-solid fa-plus"></i> Nuevo tercero</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="third_party_users_table" class="table nowrap responsive table-striped dt-responsive"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Cédula</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Es conductor</th>
+                        <th>Opciones</th>                          
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th data-priority="1">Cédula</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Es conductor</th>
+                        <th>Opciones</th>     
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block imports %}
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_terceros %}true{% else %}false{%endif%};
+    var hasPermDelete = {% if perms.fleet_app.delete_terceros %}true{% else %}false{%endif%};
+</script>
+<script type="text/javascript" src="{% static '/js/third_party_users.js' %}"></script>
+{% endblock %}

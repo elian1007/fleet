@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de costos de viajes</h4>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Listado de registros</h6>
+            <div class="d-flex flex-row align-items-center">
+                {% if perms.fleet_app.add_costos_viaje %}
+                    <a class="btn btn-success ms-2" href="{% url  'new_travel_costs' %}"><i class="fa-solid fa-plus"></i> Nuevo costo de viaje</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="travel_costs_table" class="table nowrap responsive table-striped dt-responsive"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Origen</th>
+                        <th>Destino</th>
+                        <th>Linea</th>
+                        <th>Capacidad de carga</th>
+                        <th>Valor Combustible</th>
+                        <th>Valor Peajes</th>
+                        <th>Valor Alimentación</th>
+                        <th>Valor Soat</th>
+                        <th>Gastos Operativos</th>
+                        <th>Gastos Mantenimiento</th>
+                        <th>Total</th>
+                        <th>Valor por tonelada</th>
+                        <th>Opciones</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th data-priority="1">Origen</th>
+                        <th>Dstino</th>
+                        <th>Linea</th>
+                        <th>Capacidad de carga</th>
+                        <th>Valor Combustible</th>
+                        <th>Valor Peajes</th>
+                        <th>Valor Alimentación</th>
+                        <th>Valor Soat</th>
+                        <th>Gastos Operativos</th>
+                        <th>Gastos Mantenimiento</th>
+                        <th>Total</th>
+                        <th>Valor por tonelada</th>
+                        <th>Opciones</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block imports %}
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_costos_viaje  %}true{% else %}false{%endif%};
+    var hasPermDelete = {% if perms.fleet_app.delete_costos_viaje  %}true{% else %}false{%endif%};
+</script>
+<script type="text/javascript" src="{% static '/js/travel_costs.js' %}"></script>
+{% endblock %}

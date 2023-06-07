@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de remisiones</h4>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row flex-wrap align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Listado de remisiones</h6>
+            <div class="d-flex flex-wrap align-items-center btns-report">
+                <button class="btn btn-info me-2" type="button" onclick="showCollapseReport('info_detail')"><i
+                    class="fa-solid fa-file-excel"></i> Exportar Información detallada</button>
+                    
+                <button class="btn btn-primary" type="button" onclick="showCollapseReport('info_return')"><i
+                    class="fa-solid fa-file-excel"></i> Exportar Información de retorno</button>
+                {% if perms.fleet_app.add_remisiones %}
+                    <a class="btn btn-success ms-2" href="{% url  'new_referral' %}"><i class="fa-solid fa-plus"></i> Nueva remisión</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="collapseOne" class="accordion-collapse collapse mb-5">
+                <div class="accordion-body">
+                    <form method="GET" action="dev_remision_export" id="report-form" >
+                        <div class="row justify-content-center ">
+                            <h6 class="text-center fw-bold mb-3" id="title-export">Exportar información de retorno</h6>
+                            <div class="col-md-3">
+                                <label for="picker-date-start" class="form-label">Desde la fecha</label>
+                                <input type="date" class="form-control" name="date-start" id="picker-date-start"
+                                    placeholder="seleccione la fecha inicial" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="picker-date-end" class="form-label">Hasta la fecha</label>
+                                <input type="date" class="form-control" name="date-end" id="picker-date-end"
+                                    placeholder="seleccione la fecha final" required>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-3">
+                                <button class="btn btn-secondary" onclick="hideCollapseReport()" type="button">Cerrar</button>
+                                <button class="btn btn-primary ms-2" type="submit"><i class="fa-solid fa-download"></i> Descargar
+                                    reporte</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <hr>
+            </div>
+            <table id="referrals_table" class="table nowrap responsive table-striped dt-responsive " width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Id</th>
+                        <th>Estado</th>
+                        <th>Inicio Cargue</th>
+                        <th>Fecha de despacho</th>
+                        <th>Empresa</th>
+                        <th>Fecha entrega</th>
+                        <th>Vehículo</th>
+                        <th>Peso vacío</th>
+                        <th>Código ciudad</th>
+                        <th>Conductor</th>
+                        <th>Fecha de llegada</th>
+                        <th>Fecha de Cierre</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block imports %}
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_remisiones  %}true{% else %}false{%endif%};
+    var hasPermDelete = {% if perms.fleet_app.delete_vehiculos  %}true{% else %}false{%endif%};
+</script>
+<script type="text/javascript" src="{% static '/js/referrals.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container flex-grow-1 px-5 pt-2">
+    <div class="d-flex py-2 justify-content-between mb-3">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de centros de operación</h4>
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">Listado de centros de operación</h6>
+            <div class="d-flex flex-row align-items-center">
+                {% if perms.fleet_app.add_centrosoperacion %}
+                    <a class="btn btn-success ms-2" href="{% url  'new_operations_center' %}"><i class="fa-solid fa-plus"></i> Nuevo centro de operación</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="operations_center_table" class="table nowrap responsive table-striped dt-responsive"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th data-priority="1">Código</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Dirección</th>
+                        <th>Celular</th>
+                        <th>Teléfono</th>
+                        <th>Contacto</th>
+                        <th>Personal Vinculado</th>
+                        <th>Opciones</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th data-priority="1">Código</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Dirección</th>
+                        <th>Celular</th>
+                        <th>Teléfono</th>
+                        <th>Contacto</th>
+                        <th>Personal Vinculado</th>
+                        <th>Opciones</th>
+                       
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block imports %}
+<!-- <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.4.1/js/buttons.print.min.js"></script> -->
+<script>
+    var hasPermChange = {% if perms.fleet_app.change_centrosoperacion  %}true{% else %}false{%endif%};
+    var hasPermDelete = {% if perms.fleet_app.delete_centrosoperacion  %}true{% else %}false{%endif%};
+</script>
+<script type="text/javascript" src="{% static '/js/operations_center.js' %}"></script>
+{% endblock %}

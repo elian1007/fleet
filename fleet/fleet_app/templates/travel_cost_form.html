@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% load static %}
+
+{% load helpers %}
+
+<div class="container px-5 pt-2 flex-grow-1">
+
+    <div class="d-flex pt-2 justify-content-between mb-3 flex-wrap align-items-center">
+        <h4 class="text-gray fw-bold p-0 m-0">Gestión de costos de viaje</h4>
+
+        <ul class="d-flex flex-row p-0 m-0 custom-breadcrumb">
+            <li class="fw-bolder text-dark "><a href="{% url 'travel_costs' %}">Costos de viajes</a></li>
+            <li class="mx-2">|</li>
+            <li class="fw-lighter">{% if travel_cost.origen %} {{ travel_cost.origen }} - {{ travel_cost.destino }}  {% else %} Nuevo {% endif %}</li>
+        </ul>
+
+    </div>
+    <div class="card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between py-3">
+            <h6 class="card-title m-0 fw-bold">{% if travel_cost.origen %} Editar {% else %} Crear {% endif %} costo de viaje</h6>
+        </div>
+        <form action="" method="post" class="needs-validation" id="form-travel-cost">
+            {% csrf_token %}
+            <input id="travel-cost-id" type="hidden" value="{{ travel_cost.id }}">
+            <div class="card-body">
+                <div class="row mb-3">
+
+                    <div class="col-md-3 my-2">
+                        <label for="select-region" class="form-label">Departamento destino <span
+                            class="text-danger">*</span></label>
+                        <select class="form-select" aria-label="region" id="select-region" name="region" required>
+                            <option value=""{% if not travel_cost.origen %} selected {% endif %}>Seleccione una opción</option>
+                            {% for region in regions %}
+                            <option value="{{ region.codigo }}" {% if region.codigo == travel_cost.destino.codigo_departamento.codigo %} selected {% endif %} >{{ region.nombre }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="select-city" class="form-label">Municipio destino <span
+                            class="text-danger">*</span> <i class="fa-solid fa-spinner fa-spin ms-2"
+                            id="load-city" style="display: none;"></i></label>
+                        <select class="form-select" aria-label="ciudad" id="select-city" name="city" required>
+                            <option value="" selected>Seleccione una opción</option>
+                    
+                            {% for city in cities %}
+                                <option value="{{ city.codigo }}" {% if travel_cost.destino.codigo == city.codigo %} selected {% endif %} >{{ city.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 my-2">
+                        <label for="select-vehicle" class="form-label">Linea vehículo</label>
+                        <select class="form-select" id="select-vehicle" name="select-vehicle" required>
+                            <option value="" selected>Seleccione una opción</option>
+                            {% for vehicle_line in vehicle_lines %}
+                            <option value="{{ vehicle_line.id_linea }}" {% if travel_cost.id_linea.id_linea == vehicle_line.id_linea %} selected {% endif %} >{{ vehicle_line.nombre }}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="capacity" class="form-label">Capacidad de carga (Ton)</label>
+                        <input type="number" class="form-control" id="capacity"
+                            placeholder="ingrese el número de toneladas" value="{{ travel_cost.toneladas|floatformat:'0'  }}" name="capacity" required>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="fuel-cost" class="form-label">Valor combustible</label>
+                        <input type="text" class="form-control" id="fuel-cost"
+                            placeholder="ingrese el valor del combustible" name="fuel-cost" value="{{ travel_cost.combustible|floatformat:'0' }}" maxlength="50" required>
+                    </div>
+
+                    <div class="col-md-3 my-2">
+                        <label for="additional-cost" class="form-label">Valor peajes</label>
+                        <input type="number" class="form-control" id="additional-cost"
+                            placeholder="ingrese el valor de los peajes" name="additional-cost" value="{{ travel_cost.peajes|floatformat:'0' }}" maxlength="50" required>
+                    </div>
+
+                    <div class="col-md-3 my-2">
+                        <label for="feeding-cost" class="form-label">Valor alimentación</label>
+                        <input type="number" class="form-control" id="feeding-cost"
+                            placeholder="ingrese el valor de la alimentación" name="feeding-cost" value="{{ travel_cost.alimentacion|floatformat:'0' }}" maxlength="50" required>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="insurance-cost" class="form-label">Valor SOAT</label>
+                        <input type="number" class="form-control" id="insurance-cost"
+                            placeholder="ingrese el valor del SOAT" name="insurance-cost" value="{{ travel_cost.soat|floatformat:'0' }}" maxlength="50" required>
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="operative-cost" class="form-label">Gastos operativos</label>
+                        <input type="number" class="form-control" placeholder="Ingrese el gasto operativo" id="operative-cost" value="{{ travel_cost.gasto_operativo|floatformat:'0' }}" maxlength="50" required>
+                     
+                    </div>
+                    <div class="col-md-3 my-2">
+                        <label for="maintenance-cost" class="form-label">Gastos mantenimiento</label>
+                        <input type="number" class="form-control" placeholder="Ingrese los gastos de mantenimiento" id="maintenance-cost" value="{{ travel_cost.gasto_mantenimiento|floatformat:'0' }}" maxlength="50" required>
+                    </div>
+              
+                </div>
+                <p style="color:red ;">falta crear, editar y eliminar, debido a inconvenientes con el grupo de llaves primarias y foraneas</p>
+            </div>
+            <div class="card-footer bg-white justify-content-end d-flex py-3">
+                <a class="btn btn-secondary" type="button" href="{% url  'travel_costs' %}">Descartar</a>
+                <button type="submit" class="btn btn-success ms-2">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block imports %}
+<script type="text/javascript" src="{% static '/js/travel_cost_form.js' %}"></script>
+{% endblock %}

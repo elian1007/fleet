@@ -1,0 +1,128 @@
+{% load static %}
+{% load helpers %}
+<div id="mySidenav" class="sidenav">
+
+    <div class="header px-3 mb-4 mt-2">
+        <img src="{% static '...' %}" alt="" width="55">
+    </div>
+    
+    <div class="py-2 mb-4" id="avatar-container-mobile">
+        <div class="d-flex align-items-center flex-column justify-content-center">
+          <div class="avatar">
+            <p class="text-white fw-bold"> {{ user.first_name|get_first_char }}</p>
+          </div>
+          <p class="m-0 mt-2 text-white fw-bold text-uppercase fw-bold">{{ user.username }}</p>
+        </div>
+        <a class="btn rounded-3 border-0 mx-3 my-2" href="{% url 'logout'%}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión</a>
+    </div>
+
+    <ul class="navbar-nav mb-2 px-3 gap-2">
+        <li class="nav-item mx-2">
+          <a class="nav-link {% if '/' == request.path %} active-page {% endif %}" aria-current="page"
+            href="{% url  'index' %}"><i class="fa-solid fa-house-chimney"></i> Inicio</a>
+        </li>
+
+        {% if perms.fleet_app.view_empresas %}
+        <li class="nav-item mx-2 {% if 'companies' in request.path  %} active-page {% endif %}">
+          <a class="nav-link" aria-current="page"
+            href="{% url  'companies' %}"><i class="fa-solid fa-building"></i> Empresas</a>
+        </li>
+        {%endif%}
+        {% if perms.fleet_app.view_centrosoperacion %}
+        <li class="nav-item mx-2 {% if 'operations_center' in request.path  %} active-page {% endif %}">
+          <a class="nav-link" aria-current="page"
+            href="{% url  'operations_center' %}"><i class="fa-solid fa-store"></i> Centros de operación</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_inventarios %}
+        <li class="nav-item mx-2 {% if '/inventories' in request.path  %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'inventories' %}"><i class="fa-solid fa-book"></i> Inventarios</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_zones %}
+        <li class="nav-item mx-2 {% if 'zones' in request.path %} active-page {% endif %}">
+          <a class="nav-link "
+            href="{% url  'zones' %}"><i class="fa-solid fa-map"></i> Zonas</a>
+        </li>
+        {%endif%}
+        {% if perms.fleet_app.view_departamentos %}
+        <li class="nav-item mx-2">
+          <a class="nav-link {% if 'regions' in request.path %} active-page {% endif %}"
+            href="{% url  'regions' %}"><i class="fa-solid fa-location-dot"></i> Departamentos</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_terceros %}
+        <li class="nav-item mx-2 {% if 'third_party_users' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'third_party_users' %}"><i class="fa-solid fa-user"></i> Terceros</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_domicilios %}
+        <li class="nav-item mx-2 {% if 'shipment' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'shipments' %}"><i class="fa-solid fa-truck-fast"></i> Despachos</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_vehiculos %}
+        <li class="nav-item mx-2 {% if 'vehicles' in request.path %} active-page {% endif %}">
+            <a class=" fw-bold" data-bs-toggle="collapse" href="#vehicles-collapse" role="button" aria-expanded="false" aria-controls="vehicles-collapse">
+              <i class="fa-solid fa-car me-3"></i> Vehículos</a>
+            <div class="collapse" id="vehicles-collapse">
+                <ul class="nested-list">
+                  <li><a class="nav-nested-link fs-6 fw-light"
+                    href="{% url  'vehicles' %}"><i class="fa-solid fa-circle" ></i> Listado de Vehiculos</a></li>
+                  <li><a class="nav-nested-link fs-6 fw-light"
+                    href="{% url  'vehicle_lines' %}"><i class="fa-solid fa-circle" ></i> Lineas</a></li>
+                  <li><a class="nav-nested-link fs-6 fw-light"
+                    href="{% url  'travel_costs' %}"><i class="fa-solid fa-circle" ></i> Costos de viajes</a></li>
+                  <li><a class="nav-nested-link fs-6 fw-light"
+                    href="{% url  'vehicles_capacity' %}"><i class="fa-solid fa-circle" ></i> Capacidad de carga</a></li>
+                </ul>
+            </div>
+        </li>
+        {%endif%}
+
+
+        {% if perms.fleet_app.view_abonos %}
+        <li class="nav-item mx-2 {% if 'fertilizer' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'fertilizers' %}"><i class="fa-solid fa-leaf"></i> Abonos</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_remisiones %}
+        <li class="nav-item mx-2">
+          <a class="nav-link {% if 'referrals' in request.path %} active-page {% endif %}"
+            href="{% url  'referrals' %}"><i class="fa-solid fa-arrow-right-arrow-left"></i> Remisiones</a>
+        </li>
+        {%endif%}
+
+        {% if perms.fleet_app.view_vendedores %}
+        <li class="nav-item mx-2 {% if 'vendors' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'vendors' %}"><i class="fa-solid fa-users"></i> Vendedores</a>
+        </li>
+        {% endif %}
+
+        {% if perms.fleet_app.view_rapipollo %}
+        <li class="nav-item mx-2 {% if 'rapipollo' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'rapipollo' %}"><i class="fa-solid fa-truck-arrow-right"></i> Rapipollos</a>
+        </li>
+        {% endif %}
+
+
+        {% if perms.fleet_app.view_datosperson %}
+        <li class="nav-item mx-2 {% if 'datosperson' in request.path %} active-page {% endif %}">
+          <a class="nav-link"
+            href="{% url  'datosperson' %}"><i class="fa-solid fa-truck-arrow-right"></i> Datos personales</a>
+        </li>
+        {% endif %}
+      </ul>
+</div>
